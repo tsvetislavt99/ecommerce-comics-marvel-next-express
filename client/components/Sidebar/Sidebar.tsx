@@ -31,16 +31,6 @@ type Hero = {
     id: number;
 };
 
-export async function getServerSideProps() {
-    const res = await fetch(
-        `${BASE_URL}/characters?orderBy=-modified&limit=30&offset=${getRandomArbitrary(
-            0,
-            1000
-        )}&apikey=${process.env.REACT_APP_MARVEL_API_KEY}`
-    );
-    const data = await res.json();
-}
-
 export const Sidebar = () => {
     const [trendingNow, setTrendingNow] = useState<TrendingState>({
         status: 'empty',
