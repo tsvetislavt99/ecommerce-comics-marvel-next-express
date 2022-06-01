@@ -3,8 +3,9 @@ import mongoose from 'mongoose';
 import session from 'express-session';
 import passport from 'passport';
 import MongoStore from 'connect-mongo';
+import './passport.config';
 
-export async function expressInit(app: Express) {
+export const expressInit = async (app: Express) => {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     app.use(
@@ -25,4 +26,4 @@ export async function expressInit(app: Express) {
     app.use(passport.session());
     await mongoose.connect(process.env.DB_STRING as string);
     console.log('DB Initialized');
-}
+};
