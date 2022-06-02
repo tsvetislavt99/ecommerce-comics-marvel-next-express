@@ -2,10 +2,31 @@ import {
     ChevronDoubleLeftIcon,
     ChevronDoubleRightIcon,
 } from '@heroicons/react/solid';
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
+import CarouselItem from '../CarouselItem/CarouselItem';
+
+const initialState = {
+    startX: 0,
+};
+
+const reducer = (state: any, action: any) => {
+    switch (action.type) {
+        case 'updateStartX':
+            return { ...state, startX: action.payload };
+    }
+};
+
+const carouselCofig = [
+    { bgName: 'hulk' },
+    { bgName: 'drstrange' },
+    { bgName: 'spiderman' },
+    { bgName: 'ironman' },
+];
 
 export default function Carousel() {
     const [active, setActive] = useState(1);
+    //TODO: Update for better handling of touch events
+    const [state, dispath] = useReducer(reducer, initialState);
 
     const handleLeftChange = () => {
         setActive((currActive) => {
@@ -24,10 +45,47 @@ export default function Carousel() {
             return currActive;
         });
     };
-    console.log(active);
+
+    const handleTouchStart = (e: any) => {
+        if (e.type.includes('mouse')) {
+            const action = {
+                type: 'updateStartX',
+                payload: e.clientX,
+            };
+            dispath(action);
+        } else {
+            const action = {
+                type: 'updateStartX',
+                payload: e.changedTouches[0].clientX,
+            };
+            dispath(action);
+        }
+    };
+
+    const handleTouchEnd = (e: any) => {
+        if (e.type.includes('mouse')) {
+            const currX = e.clientX;
+            if (state.startX - 50 > currX) {
+                handleRightChange();
+                return;
+            } else if (state.startX + 50 < currX) {
+                handleLeftChange();
+                return;
+            }
+        } else {
+            const currX = e.changedTouches[0].clientX;
+            if (state.startX - 50 > currX) {
+                handleRightChange();
+                return;
+            } else if (state.startX + 50 < currX) {
+                handleLeftChange();
+                return;
+            }
+        }
+    };
 
     return (
-        <div className="flex flex-row items-center h-96 border w-full border-red-500 text-red-500">
+        <div className="flex flex-row items-center h-96 text-[#00DF9A] w-full">
             <ChevronDoubleLeftIcon
                 className={
                     active === 1
@@ -36,34 +94,16 @@ export default function Carousel() {
                 }
                 onClick={handleLeftChange}
             />
-            <div
-                className={
-                    active === 1
-                        ? 'relative w-full h-full duration-500 bg-blue-500'
-                        : 'relative w-0 h-0  duration-500 bg-blue-500'
-                }
-            ></div>
-            <div
-                className={
-                    active === 2
-                        ? 'relative w-full h-full  duration-500 bg-red-500'
-                        : 'relative w-0 h-0  duration-500 bg-red-500'
-                }
-            ></div>
-            <div
-                className={
-                    active === 3
-                        ? 'relative w-full h-full duration-500 bg-green-500'
-                        : 'relative w-0 h-0  duration-500 bg-green-500'
-                }
-            ></div>
-            <div
-                className={
-                    active === 4
-                        ? 'relative w-full h-full  duration-500 bg-pink-500'
-                        : 'relative w-0 h-0  duration-500 bg-pink-500'
-                }
-            ></div>
+            {carouselCofig.map((item, index) => (
+                <CarouselItem
+                    key={item.bgName}
+                    handleTouchEnd={handleTouchEnd}
+                    handleTouchStart={handleTouchStart}
+                    active={active}
+                    itemNumber={index + 1}
+                    bgName={item.bgName}
+                />
+            ))}
             <ChevronDoubleRightIcon
                 className={
                     active === 4
