@@ -17,7 +17,7 @@ export default function CarouselItem(props: Props) {
             onMouseUp={props.handleTouchEnd}
             className={
                 props.active === props.itemNumber
-                    ? `relative w-full h-full duration-500 bg-${props.bgName} bg-cover`
+                    ? `relative w-full h-full duration-500 bg-${props.bgName} bg-cover bg-center`
                     : `relative w-0 h-0  duration-500 bg-${props.bgName} bg-cover`
             }
         ></div>

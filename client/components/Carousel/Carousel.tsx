@@ -46,25 +46,28 @@ export default function Carousel() {
         });
     };
 
-    const handleTouchStart = (e: any) => {
+    const handleTouchStart = (e: MouseEvent | TouchEvent) => {
         if (e.type.includes('mouse')) {
+            const mouseEvent = e as MouseEvent;
             const action = {
                 type: 'updateStartX',
-                payload: e.clientX,
+                payload: mouseEvent.clientX,
             };
             dispath(action);
         } else {
+            const touchEvent = e as TouchEvent;
             const action = {
                 type: 'updateStartX',
-                payload: e.changedTouches[0].clientX,
+                payload: touchEvent.changedTouches[0].clientX,
             };
             dispath(action);
         }
     };
 
-    const handleTouchEnd = (e: any) => {
+    const handleTouchEnd = (e: MouseEvent | TouchEvent) => {
         if (e.type.includes('mouse')) {
-            const currX = e.clientX;
+            const mouseEvent = e as MouseEvent;
+            const currX = mouseEvent.clientX;
             if (state.startX - 50 > currX) {
                 handleRightChange();
                 return;
@@ -73,7 +76,8 @@ export default function Carousel() {
                 return;
             }
         } else {
-            const currX = e.changedTouches[0].clientX;
+            const touchEvent = e as TouchEvent;
+            const currX = touchEvent.changedTouches[0].clientX;
             if (state.startX - 50 > currX) {
                 handleRightChange();
                 return;
