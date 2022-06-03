@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SidebarCard } from '../SidebarCard/SidebarCard';
 import { getRandomArbitrary } from 'lib/helpers';
+import SidebarCharGhostLoading from './SidebarCharGhostLoading';
 const BASE_URL = 'https://gateway.marvel.com:443/v1/public';
 
 type TrendingState = {
@@ -53,7 +54,6 @@ export const Sidebar = () => {
                         )}&apikey=760cf7beb5fa6ffd51c0d558c1605db4`
                     );
                     const data = await res.json();
-
                     const charData = data.data.results
                         .filter(
                             (char: Hero) =>
@@ -90,7 +90,18 @@ export const Sidebar = () => {
     ));
 
     if (trendingNow.status === 'waiting') {
-        return <div>Meow</div>;
+        return (
+            <div className="hidden sm:block col-start-2 col-end-4 row-span-full">
+                <h2 className="text-xl text-center text-[#00DF9A] my-3 font-mono">
+                    Trending now
+                </h2>
+                <ul>
+                    {new Array(10).fill(0).map((item, index) => (
+                        <SidebarCharGhostLoading key={index} />
+                    ))}
+                </ul>
+            </div>
+        );
     }
 
     if (trendingNow.error) {
