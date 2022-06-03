@@ -1,29 +1,20 @@
 import express, { Express } from 'express';
 import mongoose from 'mongoose';
-import session from 'express-session';
 import passport from 'passport';
-import MongoStore from 'connect-mongo';
+import cors from 'cors';
 import './passport.config';
 
 export const expressInit = async (app: Express) => {
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: true }));
     app.use(
-        session({
-            secret: process.env.SECRET as string,
-            store: MongoStore.create({
-                mongoUrl: process.env.DB_STRING as string,
-                collectionName: 'sessions',
-            }),
-            resave: false,
-            saveUninitialized: true,
-            cookie: {
-                maxAge: 1000 * 60 * 60 * 24 * 7, //One week
-            },
+        cors({
+            origin: true,
+            credentials: true,
+            optionsSuccessStatus: 200,
         })
     );
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
     app.use(passport.initialize());
-    app.use(passport.session());
     await mongoose.connect(process.env.DB_STRING as string);
     console.log('DB Initialized');
 };

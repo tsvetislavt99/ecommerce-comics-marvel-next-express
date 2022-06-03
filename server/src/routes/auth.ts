@@ -1,31 +1,53 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import passport from 'passport';
-import { UserModel, UserType } from '../db/users/models/users.model';
-import { isAuth } from '../middleware/authMiddleware';
-import { createUser } from '../services/authService';
-import { genPassword } from '../utils/passport.utils';
+import { UserType } from '../db/users/models/users.model';
+import { createUser, loginUser } from '../services/authService';
+import { issueJWT } from '../utils/helpers';
 
 export const authRoutes = Router();
 
-//Login
-authRoutes.post(
-    '/login',
-    passport.authenticate('local'),
-    (req: Request, res: Response) => {
-        res.send({ message: 'Success!' });
+authRoutes.get(
+    '/me',
+    passport.authenticate('jwt', { session: false }),
+    (req: Request, res: Response, next: NextFunction) => {
+        res.json('Yes you can!');
     }
 );
+
+//Login
+authRoutes.post('/login', async (req: Request, res: Response) => {
+    const data = await loginUser(req.body.username, req.body.password);
+
+    if (data.message) {
+        res.status(409).json({ message: 'Invalid credentials!' });
+    } else if (data.user && data.jwt) {
+        res.json({
+            message: 'Success!',
+            user: { username: data.user.username, id: data.user.id },
+            token: data.jwt.token,
+            expiresIn: data.jwt.expires,
+        });
+    } else {
+        //TODO: Improve error handling
+        res.status(418);
+    }
+});
 
 //Register
 authRoutes.post(
     '/register',
-    (req: Request, res: Response, next: NextFunction) => {
+    async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { password, username } = req.body;
-            createUser(password, username);
+            const user: UserType = await createUser(password, username);
+
+            const jwt = issueJWT(user);
 
             res.json({
-                message: `Succeffully registered user: ${req.body.username}`,
+                message: 'Success!',
+                user: { username: user.username, id: user.id },
+                token: jwt.token,
+                expiresIn: jwt.expires,
             });
         } catch (error) {
             res.json({ message: 'Unexpected error! Please try again!' });
@@ -33,14 +55,3 @@ authRoutes.post(
         }
     }
 );
-
-//Logout
-authRoutes.get('/logout', (req: Request, res: Response, next: NextFunction) => {
-    // @ts-expect-error: Expected 0 args, but received 1 (Passport latest update broke this)
-    req.logout((err: any) => {
-        if (err) {
-            return next(err);
-        }
-        res.send({ message: 'Success!' });
-    });
-});

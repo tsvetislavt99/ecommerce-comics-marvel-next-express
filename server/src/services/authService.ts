@@ -1,5 +1,5 @@
-import { UserModel } from '../db/users/models/users.model';
-import { genPassword } from '../utils/passport.utils';
+import { UserModel, UserType } from '../db/users/models/users.model';
+import { genPassword, issueJWT, validPassword } from '../utils/helpers';
 
 export const createUser = async (password: string, username: string) => {
     const { salt, hash } = genPassword(password);
@@ -10,4 +10,21 @@ export const createUser = async (password: string, username: string) => {
     });
 
     return await newUser.save();
+};
+
+export const loginUser = async (username: string, password: string) => {
+    const user: UserType | null = await UserModel.findOne({
+        username: username,
+    });
+    if (!user) {
+        return { message: 'No such user!' };
+    }
+    const isValid = validPassword(password, user.hash, user.salt);
+    if (isValid) {
+        const jwt = issueJWT(user);
+
+        return { user, jwt };
+    } else {
+        return { message: 'Wrong credentials' };
+    }
 };
