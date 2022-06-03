@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Link from 'next/link';
 import { MenuIcon, XIcon, SearchIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
 import { SearchBar } from './SearchBar';
+import { UserContext } from 'contexts/UserContext';
 
 const navLinksGuest = [
     { title: 'Home', path: '/' },
     { title: 'Catalog', path: '/catalog' },
     { title: 'Login', path: '/login' },
-    { title: 'Resgister', path: '/register' },
+    { title: 'Register', path: '/register' },
 ];
 
 //Not implemented yet
-const navLinksUser = [];
+const navLinksUser = [
+    { title: 'Home', path: '/' },
+    { title: 'Catalog', path: '/catalog' },
+    { title: 'Profile', path: '/login' },
+    { title: 'Cart', path: '/register' },
+];
 
 export const Navbar = () => {
     const [nav, setNav] = useState(false);
     const [mobileSearch, setMobileSearch] = useState(false);
     const router = useRouter();
+    const user = useContext(UserContext);
 
     const handleNav = () => {
         setNav((nav) => !nav);
@@ -49,21 +56,37 @@ export const Navbar = () => {
                     <SearchBar />
                 </div>
                 <ul className="sm:flex hidden">
-                    {navLinksGuest.map((link) => (
-                        <li key={link.path} className="p-4">
-                            <Link href={link.path}>
-                                <a
-                                    className={
-                                        router.pathname === link.path
-                                            ? 'border-b-2 pb-1 border-[#00df9a]'
-                                            : ''
-                                    }
-                                >
-                                    {link.title}
-                                </a>
-                            </Link>
-                        </li>
-                    ))}
+                    {user.username
+                        ? navLinksUser.map((link) => (
+                              <li key={link.path} className="p-4">
+                                  <Link href={link.path}>
+                                      <a
+                                          className={
+                                              router.pathname === link.path
+                                                  ? 'border-b-2 pb-1 border-[#00df9a]'
+                                                  : ''
+                                          }
+                                      >
+                                          {link.title}
+                                      </a>
+                                  </Link>
+                              </li>
+                          ))
+                        : navLinksGuest.map((link) => (
+                              <li key={link.path} className="p-4">
+                                  <Link href={link.path}>
+                                      <a
+                                          className={
+                                              router.pathname === link.path
+                                                  ? 'border-b-2 pb-1 border-[#00df9a]'
+                                                  : ''
+                                          }
+                                      >
+                                          {link.title}
+                                      </a>
+                                  </Link>
+                              </li>
+                          ))}
                 </ul>
                 {
                     //Mobile nav
@@ -73,7 +96,6 @@ export const Navbar = () => {
                         onClick={handleMobileSearch}
                         className="text-white block mr-2 sm:hidden"
                     >
-                        {' '}
                         {mobileSearch ? (
                             <XIcon className="h-6 w-6" color="white" />
                         ) : (
