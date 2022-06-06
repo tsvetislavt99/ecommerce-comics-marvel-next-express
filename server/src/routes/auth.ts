@@ -10,7 +10,7 @@ authRoutes.get(
     '/me',
     passport.authenticate('jwt', { session: false }),
     (req: Request, res: Response, next: NextFunction) => {
-        res.json('Yes you can!');
+        res.json({ user: { username: req.user?.username, id: req.user?.id } });
     }
 );
 
