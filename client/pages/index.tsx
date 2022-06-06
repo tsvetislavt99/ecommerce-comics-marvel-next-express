@@ -1,10 +1,13 @@
 import type { ReactElement } from 'react';
 import { Layout } from '@/components/Layout/Layout';
-import { NestedLayout } from '@/components/SidebarLayout/SidebarLayout';
-import { Sidebar } from '@/components/Sidebar/Sidebar';
+import { Hero } from '@/components/Hero/Hero';
 
 export default function Home() {
-    return <div></div>;
+    return (
+        <div>
+            <Hero />
+        </div>
+    );
 }
 
 Home.getLayout = function getLayout(page: ReactElement) {

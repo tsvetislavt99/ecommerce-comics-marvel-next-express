@@ -4,6 +4,23 @@ module.exports = {
         './components/**/*.{js,ts,jsx,tsx}',
     ],
     theme: {
+        keyframes: {
+            typewriter: {
+                to: {
+                    left: '100%',
+                },
+            },
+            delete: {
+                to: {
+                    left: '0',
+                },
+            },
+            blink: {
+                to: {
+                    background: '#FFF',
+                },
+            },
+        },
         extend: {
             backgroundImage: {
                 hulk: "url('../public/images/hulk.jpg')",
@@ -13,6 +30,16 @@ module.exports = {
             },
         },
     },
-    safelist: ['bg-hulk', 'bg-spiderman', 'bg-drstrange', 'bg-ironman'],
+    safelist: [
+        'bg-hulk',
+        'bg-spiderman',
+        'bg-drstrange',
+        'bg-ironman',
+        '4',
+        '7',
+        '9',
+        '11',
+        '14',
+    ],
     plugins: [],
 };

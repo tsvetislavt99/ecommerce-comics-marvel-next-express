@@ -1,4 +1,5 @@
 import React from 'react';
+import { UserProvider } from 'contexts/UserContext';
 import { Navbar } from '../Navbar/Navbar';
 
 type Props = {
@@ -8,8 +9,10 @@ type Props = {
 export const Layout: React.FC<Props> = ({ children }) => {
     return (
         <>
-            <Navbar />
-            <main>{children}</main>
+            <UserProvider>
+                <Navbar />
+                <main>{children}</main>
+            </UserProvider>
         </>
     );
 };
