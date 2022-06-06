@@ -4,9 +4,9 @@ import TypeWriterSpan from '../TypeWriterSpan/TypeWriterSpan';
 
 export const Hero = () => {
     return (
-        <section className="grid grid-rows-1 grid-cols-1 md:grid-cols-2 max-w-[1240px] mx-auto px-4">
+        <section className="grid grid-rows-1 grid-cols-1 md:grid-cols-2 max-w-[1240px] mx-auto px-4 -z-20">
             <div className="text-white">
-                <div className="flex flex-col mx-auto justify-center items-center h-screen mt-[-5rem]">
+                <div className="flex flex-col mx-auto justify-center items-center h-screen">
                     <p className="text-[#00df9a] text-sm lg:text-base font-semibold uppercase">
                         Find all the cool comics here!
                     </p>
