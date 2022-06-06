@@ -18,6 +18,7 @@ const navLinksUser = [
     { title: 'Catalog', path: '/catalog' },
     { title: 'Profile', path: '/login' },
     { title: 'Cart', path: '/register' },
+    { title: 'Logout', path: '/logout' },
 ];
 
 export const Navbar = () => {
@@ -52,10 +53,23 @@ export const Navbar = () => {
                 <h1 className="w-content text-3xl font-bold text-[#00df9a] uppercase">
                     <Link href="/">comics.</Link>
                 </h1>
-                <div className="hidden sm:block mx-auto w-full">
+                <div className="hidden lg:block mx-auto w-full">
                     <SearchBar />
                 </div>
-                <ul className="sm:flex hidden">
+
+                <ul className="sm:flex items-center hidden">
+                    <li className="hidden sm:block lg:hidden mt-2 mr-2">
+                        <div
+                            onClick={handleMobileSearch}
+                            className="text-white block"
+                        >
+                            {mobileSearch ? (
+                                <XIcon className="h-6 w-6" color="white" />
+                            ) : (
+                                <SearchIcon className="h-6 w-6" />
+                            )}
+                        </div>
+                    </li>
                     {user.username
                         ? navLinksUser.map((link) => (
                               <li key={link.path} className="p-4">
@@ -63,8 +77,8 @@ export const Navbar = () => {
                                       <a
                                           className={
                                               router.pathname === link.path
-                                                  ? 'border-b-2 pb-1 border-[#00df9a]'
-                                                  : ''
+                                                  ? 'text-sm md:text-base border-b-2 pb-1 border-[#00df9a]'
+                                                  : 'text-sm md:text-base'
                                           }
                                       >
                                           {link.title}
@@ -136,8 +150,8 @@ export const Navbar = () => {
             <div
                 className={
                     !mobileSearch
-                        ? 'fixed top-[-100%] w-full basis-full items-center ease-out duration-1000 sm:hidden'
-                        : 'fixed top-20 w-full basis-full items-center ease-in-out duration-500 sm:hidden'
+                        ? 'fixed top-[-100%] w-full basis-full items-center ease-out duration-1000 lg:hidden'
+                        : 'fixed top-20 w-full basis-full items-center ease-in-out duration-500 lg:hidden'
                 }
             >
                 <SearchBar />
