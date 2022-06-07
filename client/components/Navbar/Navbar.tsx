@@ -4,6 +4,7 @@ import { MenuIcon, XIcon, SearchIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
 import { SearchBar } from './SearchBar';
 import { UserContext } from 'contexts/UserContext';
+import { CartContext } from 'contexts/CartContext';
 
 const navLinksGuest = [
     { title: 'Home', path: '/' },
@@ -12,20 +13,21 @@ const navLinksGuest = [
     { title: 'Register', path: '/register' },
 ];
 
-//Not implemented yet
 const navLinksUser = [
     { title: 'Home', path: '/' },
     { title: 'Catalog', path: '/catalog' },
-    { title: 'Profile', path: '/login' },
+    { title: 'Profile', path: '/profile' },
     { title: 'Cart', path: '/register' },
     { title: 'Logout', path: '/logout' },
 ];
 
+//TODO: Extracts links in separate component
 export const Navbar = () => {
     const [nav, setNav] = useState(false);
     const [mobileSearch, setMobileSearch] = useState(false);
     const router = useRouter();
     const user = useContext(UserContext);
+    const cart = useContext(CartContext);
 
     const handleNav = () => {
         setNav((nav) => !nav);
@@ -71,21 +73,52 @@ export const Navbar = () => {
                         </div>
                     </li>
                     {user.username
-                        ? navLinksUser.map((link) => (
-                              <li key={link.path} className="p-4">
-                                  <Link href={link.path}>
-                                      <a
-                                          className={
-                                              router.pathname === link.path
-                                                  ? 'text-sm md:text-base border-b-2 pb-1 border-[#00df9a]'
-                                                  : 'text-sm md:text-base'
-                                          }
-                                      >
-                                          {link.title}
-                                      </a>
-                                  </Link>
-                              </li>
-                          ))
+                        ? navLinksUser.map((link) => {
+                              if (link.title === 'Cart') {
+                                  return (
+                                      <React.Fragment key={link.path}>
+                                          <li
+                                              key={link.path}
+                                              className="p-4 relative"
+                                          >
+                                              <span className="absolute right-0 z-10 select-none bg-red-500 text-[10px] px-1 rounded-full">
+                                                  {cart.items}
+                                              </span>
+
+                                              <Link href={link.path}>
+                                                  <a
+                                                      className={
+                                                          router.pathname ===
+                                                          link.path
+                                                              ? 'text-sm md:text-base border-b-2 pb-1 border-[#00df9a]'
+                                                              : 'text-sm md:text-base'
+                                                      }
+                                                  >
+                                                      {link.title}
+                                                  </a>
+                                              </Link>
+                                          </li>
+                                      </React.Fragment>
+                                  );
+                              } else {
+                                  return (
+                                      <li key={link.path} className="p-4">
+                                          <Link href={link.path}>
+                                              <a
+                                                  className={
+                                                      router.pathname ===
+                                                      link.path
+                                                          ? 'text-sm md:text-base border-b-2 pb-1 border-[#00df9a]'
+                                                          : 'text-sm md:text-base'
+                                                  }
+                                              >
+                                                  {link.title}
+                                              </a>
+                                          </Link>
+                                      </li>
+                                  );
+                              }
+                          })
                         : navLinksGuest.map((link) => (
                               <li key={link.path} className="p-4">
                                   <Link href={link.path}>
@@ -135,12 +168,74 @@ export const Navbar = () => {
                         comics.
                     </h1>
                     <ul className="pt-8 uppercase">
-                        <li className="p-4 border-b border-b-gray-900">
-                            <Link href="/">Home</Link>
-                        </li>
-                        <li className="p-4 border-b border-b-gray-900">
-                            <Link href="/catalog">Catalog</Link>
-                        </li>
+                        {user.username
+                            ? navLinksUser.map((link) => {
+                                  if (link.title === 'Cart') {
+                                      return (
+                                          <React.Fragment key={link.path}>
+                                              <li
+                                                  key={link.path}
+                                                  className="p-4 border-b border-b-gray-900 relative"
+                                              >
+                                                  <span className="absolute left-14 z-10 select-none bg-red-500 text-[10px] px-1 rounded-full">
+                                                      {cart.items}
+                                                  </span>
+
+                                                  <Link href={link.path}>
+                                                      <a
+                                                          className={
+                                                              router.pathname ===
+                                                              link.path
+                                                                  ? 'text-sm md:text-base border-b-2 pb-1 border-[#00df9a]'
+                                                                  : 'text-sm md:text-base'
+                                                          }
+                                                      >
+                                                          {link.title}
+                                                      </a>
+                                                  </Link>
+                                              </li>
+                                          </React.Fragment>
+                                      );
+                                  } else {
+                                      return (
+                                          <li
+                                              key={link.path}
+                                              className="p-4 border-b border-b-gray-900"
+                                          >
+                                              <Link href={link.path}>
+                                                  <a
+                                                      className={
+                                                          router.pathname ===
+                                                          link.path
+                                                              ? 'text-sm md:text-base border-b-2 pb-1 border-[#00df9a]'
+                                                              : 'text-sm md:text-base'
+                                                      }
+                                                  >
+                                                      {link.title}
+                                                  </a>
+                                              </Link>
+                                          </li>
+                                      );
+                                  }
+                              })
+                            : navLinksGuest.map((link) => (
+                                  <li
+                                      key={link.path}
+                                      className="p-4 border-b border-b-gray-900"
+                                  >
+                                      <Link href={link.path}>
+                                          <a
+                                              className={
+                                                  router.pathname === link.path
+                                                      ? 'border-b-2 pb-1 border-[#00df9a]'
+                                                      : ''
+                                              }
+                                          >
+                                              {link.title}
+                                          </a>
+                                      </Link>
+                                  </li>
+                              ))}
                     </ul>
                 </div>
             </div>

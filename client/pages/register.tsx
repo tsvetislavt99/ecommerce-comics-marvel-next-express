@@ -11,7 +11,6 @@ export default function Register() {
         console.log(username, password, rePassword);
     };
 
-    //TODO: Fix any type
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(e.target.value);
     };

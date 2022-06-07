@@ -30,7 +30,7 @@ export async function getStaticProps() {
 export default function Catalog(props: Props) {
     return (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center">
-            <div className="col-span-full w-full mb-10">
+            <div className="col-span-full w-full mb-10 -z-10">
                 <Carousel />
             </div>
             {props.data.map((comic) => (

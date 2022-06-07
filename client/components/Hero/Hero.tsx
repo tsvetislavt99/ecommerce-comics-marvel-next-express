@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import TypeWriterSpan from '../TypeWriterSpan/TypeWriterSpan';
 
 export const Hero = () => {
@@ -27,6 +26,7 @@ export const Hero = () => {
     );
 };
 
+//TODO: Update
 const chars = [
     {
         name: 'Hulk',
