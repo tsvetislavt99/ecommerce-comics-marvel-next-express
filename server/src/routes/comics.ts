@@ -1,6 +1,8 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { ComicModel } from '../db/comics/models/comic.model';
 
+//TODO: Extract buissness logic into services
+
 export const comicRoutes = Router();
 
 comicRoutes.get(
@@ -21,7 +23,11 @@ comicRoutes.get(
                 .skip(Number(req.params.offset))
                 .limit(Number(req.params.limit));
             const totalCount = await ComicModel.count();
-            res.json({ data: data, total: totalCount });
+            res.json({
+                data: data,
+                total: totalCount,
+                page: Math.round((Number(req.params.offset) + 28) / 28),
+            });
         } catch (error) {
             console.log(error);
             next(error);

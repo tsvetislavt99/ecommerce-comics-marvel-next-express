@@ -1,7 +1,7 @@
 import { ObjectId } from 'bson';
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     username: {
         type: String,
         unique: true,
@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     salt: String,
 });
 
-export const UserModel = mongoose.model('Users', userSchema);
+export const UserModel = mongoose.model('Users', UserSchema);
 
 export type UserType = {
     id: ObjectId;
