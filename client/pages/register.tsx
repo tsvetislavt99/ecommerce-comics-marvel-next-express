@@ -12,15 +12,15 @@ export default function Register() {
     };
 
     //TODO: Fix any type
-    const handleUsernameChange = (e: any) => {
+    const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(e.target.value);
     };
 
-    const handlePasswordChange = (e: any) => {
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
     };
 
-    const handleRePasswordChange = (e: any) => {
+    const handleRePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setRePassword(e.target.value);
     };
 
