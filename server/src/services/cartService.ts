@@ -33,3 +33,8 @@ export const removeComicFromCart = async (userId: string, comicId: string) => {
 
     return cart;
 };
+
+export const getCartItemsAmount = async (userId: string) => {
+    const cart = await CartModel.findOne({ user: userId });
+    return cart?.products.length;
+};
