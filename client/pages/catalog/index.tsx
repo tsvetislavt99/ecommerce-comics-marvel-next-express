@@ -28,7 +28,6 @@ export async function getStaticProps() {
 }
 
 export default function Catalog(props: Props) {
-    console.log(props.page);
     return (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center">
             <div className="col-span-full w-full mb-10">
