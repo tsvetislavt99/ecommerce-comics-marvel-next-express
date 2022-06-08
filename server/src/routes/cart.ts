@@ -5,7 +5,7 @@ import {
     confirmCorrectUserPostReqs,
 } from '../middleware/authMiddleware';
 import {
-    addComicToCard,
+    addComicToCart,
     getCartByUserId,
     getCartItemsAmount,
     removeComicFromCart,
@@ -35,6 +35,7 @@ cartRouter.get(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const cart = await getCartByUserId(req.params.userId);
+            console.log(cart);
             res.send({ cart });
         } catch (error) {
             return next(error);
@@ -48,7 +49,7 @@ cartRouter.put(
     confirmCorrectUserPostReqs,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const cart = await addComicToCard(
+            const cart = await addComicToCart(
                 req.body.userId,
                 req.body.comicId
             );

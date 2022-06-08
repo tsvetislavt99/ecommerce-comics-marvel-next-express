@@ -2,7 +2,7 @@ import { CartModel } from '../db/cart/models/cart.model';
 import { ComicModel } from '../db/comics/models/comic.model';
 
 //TODO: Refactor
-export const addComicToCard = async (userId: string, comicId: string) => {
+export const addComicToCart = async (userId: string, comicId: string) => {
     const cart = await CartModel.findOne({ user: userId });
     if (!cart) {
         const newCart = new CartModel({
@@ -22,7 +22,7 @@ export const addComicToCard = async (userId: string, comicId: string) => {
             } else {
                 cart.products = cart.products.map((product) => {
                     if (product.comic.id === comicId) {
-                        product.quantity += 1;
+                        product.quantity = product.quantity + 1;
                     }
                     return product;
                 });
@@ -38,18 +38,20 @@ export const addComicToCard = async (userId: string, comicId: string) => {
 };
 
 export const removeComicFromCart = async (userId: string, comicId: string) => {
-    const comic = await ComicModel.findById(comicId);
-    const cart = await CartModel.findOneAndUpdate(
-        { user: userId },
-        { $pull: { products: comic } }
-    );
+    const cart = await CartModel.findOne({ user: userId });
     if (cart) {
+        cart.products = cart.products.filter(
+            (product): any => product.comic.id !== comicId
+        );
+        console.log(cart.products);
         cart.price = cart.products.reduce((acc: number, curr: any) => {
-            return (acc += curr.price);
+            return (acc += curr.comic.price * curr.quantity);
         }, 0);
         cart.shippingPrice = cart.price > 50 ? 0 : 9.99;
     }
-    return await cart?.save();
+
+    cart?.save();
+    return cart;
 };
 
 export const getCartByUserId = async (userId: string) => {

@@ -22,7 +22,7 @@ const CartSchema = new mongoose.Schema<Cart>({
         default: function () {
             //TODO: Change
             return this.products.reduce((acc: number, curr: any) => {
-                return (acc += curr.price);
+                return (acc += curr.comic.price);
             }, 0);
         },
     },
