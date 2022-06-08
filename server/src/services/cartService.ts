@@ -43,11 +43,11 @@ export const removeComicFromCart = async (userId: string, comicId: string) => {
         cart.products = cart.products.filter(
             (product): any => product.comic.id !== comicId
         );
-        console.log(cart.products);
         cart.price = cart.products.reduce((acc: number, curr: any) => {
             return (acc += curr.comic.price * curr.quantity);
         }, 0);
-        cart.shippingPrice = cart.price > 50 ? 0 : 9.99;
+        cart.shippingPrice =
+            cart.products.length > 0 ? (cart.price > 50 ? 0 : 9.99) : 0;
     }
 
     cart?.save();
