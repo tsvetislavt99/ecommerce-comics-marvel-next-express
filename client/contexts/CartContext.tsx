@@ -1,28 +1,22 @@
 import Cookies from 'js-cookie';
+import { getFetcher } from 'lib/fetchers';
 import { createContext, useContext, useEffect, useState } from 'react';
 import useSWR from 'swr';
 import { useUser } from './UserContext';
 
-const getFetcher = async (uri: string, token: string | undefined) => {
-    try {
-        const res = await fetch(uri, {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-        });
-
-        const data = await res.json();
-
-        return await data;
-    } catch (error) {}
-};
-
 const initialValue = {
     items: 0,
+    cart: {
+        products: [],
+        shippingPrice: 0,
+        price: 0,
+    },
 };
 
-export const CartContext = createContext(initialValue);
+export const CartContext = createContext({
+    ...initialValue,
+    setCart: (cart: any) => {},
+});
 
 type Props = {
     children: React.ReactNode;
@@ -33,25 +27,49 @@ export const CartProvider = ({ children }: Props) => {
     const token = Cookies.get('CA_J7');
     if (token) {
         const { data, error } = useSWR(
-            [`http://localhost:8089/cart/items-amount/${id}`, token],
+            [`http://localhost:8089/cart/my-cart/${id}`, token],
             getFetcher
         );
         const [amount, setAmount] = useState(0);
+        const [cart, setCart] = useState(initialValue.cart);
         useEffect(() => {
-            if (data) {
-                console.log(data);
-                setAmount(data.amount);
+            if (data && data.cart) {
+                setAmount(
+                    data.cart.products.reduce(
+                        (acc: number, curr: any) => (acc += curr.quantity),
+                        0
+                    )
+                );
+                setCart(data.cart);
             }
         }, [data]);
 
+        const updateCart = (cart: any) => {
+            setCart(cart);
+            setAmount(
+                cart.products.reduce(
+                    (acc: number, curr: any) => (acc += curr.quantity),
+                    0
+                )
+            );
+        };
+
         return (
-            <CartContext.Provider value={{ items: amount }}>
+            <CartContext.Provider
+                value={{ items: amount, cart, setCart: updateCart }}
+            >
                 {children}
             </CartContext.Provider>
         );
     } else {
         return (
-            <CartContext.Provider value={{ items: 0 }}>
+            <CartContext.Provider
+                value={{
+                    items: 0,
+                    cart: initialValue.cart,
+                    setCart: (cart: any) => {},
+                }}
+            >
                 {children}
             </CartContext.Provider>
         );

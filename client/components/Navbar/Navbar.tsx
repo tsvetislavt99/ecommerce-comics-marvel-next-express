@@ -17,7 +17,7 @@ const navLinksUser = [
     { title: 'Home', path: '/' },
     { title: 'Catalog', path: '/catalog' },
     { title: 'Profile', path: '/profile' },
-    { title: 'Cart', path: '/register' },
+    { title: 'Cart', path: '/cart' },
     { title: 'Logout', path: '/logout' },
 ];
 
@@ -27,7 +27,7 @@ export const Navbar = () => {
     const [mobileSearch, setMobileSearch] = useState(false);
     const router = useRouter();
     const user = useContext(UserContext);
-    const cart = useContext(CartContext);
+    const { items } = useContext(CartContext);
 
     const handleNav = () => {
         setNav((nav) => !nav);
@@ -82,7 +82,7 @@ export const Navbar = () => {
                                               className="p-4 relative"
                                           >
                                               <span className="absolute right-0 z-10 select-none bg-red-500 text-[10px] px-1 rounded-full">
-                                                  {cart.items}
+                                                  {items}
                                               </span>
 
                                               <Link href={link.path}>
@@ -138,7 +138,7 @@ export const Navbar = () => {
                 {
                     //Mobile nav
                 }
-                <div className="flex flex-row flex-nowrap sm:hidden">
+                <div className="flex flex-row flex-nowrap sm:hidden ">
                     <div
                         onClick={handleMobileSearch}
                         className="text-white block mr-2 sm:hidden"
@@ -160,8 +160,8 @@ export const Navbar = () => {
                 <div
                     className={
                         nav
-                            ? 'sm:hidden fixed left-0 top-0 w-[60%] border-r border-r-gray-900 h-full bg-[#000300] ease-in-out duration-500'
-                            : 'fixed left-[-100%]  ease-out duration-1000'
+                            ? 'sm:hidden fixed left-0 top-0 w-[60%] border-r border-r-gray-900 h-full bg-[#000300] ease-in-out duration-500 z-50'
+                            : 'fixed left-[-100%]  ease-out duration-1000 z-50'
                     }
                 >
                     <h1 className="w-full text-3xl font-bold text-[#00df9a] mt-4 ml-4 uppercase">
@@ -178,7 +178,7 @@ export const Navbar = () => {
                                                   className="p-4 border-b border-b-gray-900 relative"
                                               >
                                                   <span className="absolute left-14 z-10 select-none bg-red-500 text-[10px] px-1 rounded-full">
-                                                      {cart.items}
+                                                      {items}
                                                   </span>
 
                                                   <Link href={link.path}>
@@ -245,8 +245,8 @@ export const Navbar = () => {
             <div
                 className={
                     !mobileSearch
-                        ? 'fixed top-[-100%] w-full basis-full items-center ease-out duration-1000 lg:hidden'
-                        : 'fixed top-20 w-full basis-full items-center ease-in-out duration-500 lg:hidden'
+                        ? 'fixed top-[-100%] w-full basis-full items-center ease-out duration-1000 lg:hidden z-50'
+                        : 'fixed top-20 w-full basis-full items-center ease-in-out duration-500 lg:hidden z-50'
                 }
             >
                 <SearchBar />

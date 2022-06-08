@@ -43,7 +43,7 @@ export default function Pagination({
     console.log(toRender);
 
     return (
-        <div className="col-span-full">
+        <div className="col-span-full mb-10">
             <ul className="text-white flex flex-row flex-nowrap">
                 {toRender.map((el, index) => {
                     if (currentPage === el) {

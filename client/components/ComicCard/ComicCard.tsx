@@ -1,4 +1,7 @@
 import { PlusIcon } from '@heroicons/react/solid';
+import { useCart } from 'contexts/CartContext';
+import { useUser } from 'contexts/UserContext';
+import { addComicToCart } from 'services/cartService';
 
 type Props = {
     title: string;
@@ -7,9 +10,22 @@ type Props = {
         extension: string;
     };
     price: number;
+    id: string;
 };
 
 export const ComicCard = (props: Props) => {
+    const { id } = useUser();
+    const { setCart } = useCart();
+
+    const addToCartHandler = async () => {
+        try {
+            const newCart = await addComicToCart(id, props.id);
+            setCart(newCart.cart);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <div
             style={{
@@ -29,7 +45,10 @@ export const ComicCard = (props: Props) => {
                 </div>
                 <div>
                     <div className="flex flex-row flex-nowrap justify-between mx-2 my-2">
-                        <button className="px-2 md:px-5 py-2 bg-gray-600/90 rounded-2xl hover:text-[#00DF9A]">
+                        <button
+                            onClick={addToCartHandler}
+                            className="px-2 md:px-5 py-2 bg-gray-600/90 rounded-2xl hover:text-[#00DF9A]"
+                        >
                             <PlusIcon className="h-4" />
                         </button>
                         <button className="px-4 2xl:px-5 py-2 bg-[#00DF9A] rounded-2xl text-[#16181E] hover:text-[#F9F9F9] text-xs font-semibold">

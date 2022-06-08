@@ -1,19 +1,7 @@
 import Cookies from 'js-cookie';
+import { getFetcher } from 'lib/fetchers';
 import { createContext, useContext, useEffect, useState } from 'react';
 import useSWR from 'swr';
-
-const getFetcher = async (uri: string, token: string | undefined) => {
-    const res = await fetch(uri, {
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-    });
-
-    const data = await res.json();
-
-    return await data;
-};
 
 const initialValue = {
     username: '',
