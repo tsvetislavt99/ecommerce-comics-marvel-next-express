@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 export interface Comic {
+    id: string;
     title: string;
     description: string;
     thumbnail: string;

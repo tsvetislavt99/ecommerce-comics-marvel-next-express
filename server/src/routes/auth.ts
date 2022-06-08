@@ -15,23 +15,29 @@ authRoutes.get(
 );
 
 //Login
-authRoutes.post('/login', async (req: Request, res: Response) => {
-    const data = await loginUser(req.body.username, req.body.password);
-
-    if (data.message) {
-        res.status(409).json({ message: 'Invalid credentials!' });
-    } else if (data.user && data.jwt) {
-        res.json({
-            message: 'Success!',
-            user: { username: data.user.username, id: data.user.id },
-            token: data.jwt.token,
-            expiresIn: data.jwt.expires,
-        });
-    } else {
-        //TODO: Improve error handling
-        res.status(418);
+authRoutes.post(
+    '/login',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const data = await loginUser(req.body.username, req.body.password);
+            if (data.message) {
+                res.status(409).json({ message: 'Invalid credentials!' });
+            } else if (data.user && data.jwt) {
+                res.json({
+                    message: 'Success!',
+                    user: { username: data.user.username, id: data.user.id },
+                    token: data.jwt.token,
+                    expiresIn: data.jwt.expires,
+                });
+            } else {
+                //TODO: Improve error handling
+                res.status(418);
+            }
+        } catch (error) {
+            return next(error);
+        }
     }
-});
+);
 
 //Register
 authRoutes.post(
