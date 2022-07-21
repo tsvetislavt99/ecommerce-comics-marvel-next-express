@@ -13,7 +13,7 @@ type Props = {
     page: number;
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     const res = await fetch(
         'https://e-commerce-back-end-marvel.herokuapp.com/comics/comics-page/0/28'
     );
