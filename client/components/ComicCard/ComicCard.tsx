@@ -40,7 +40,7 @@ export const ComicCard = (props: Props) => {
                         {props.title}
                     </h2>
                     <div className="flex flex-row flex-nowrap text-[#00DF9A]">
-                        ${props.price || '--.--'}
+                        ${props.price.toFixed(2) || '--.--'}
                     </div>
                 </div>
                 <div>

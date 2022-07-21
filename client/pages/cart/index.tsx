@@ -5,7 +5,6 @@ import React, { ReactElement, useContext } from 'react';
 
 export default function Cart() {
     const { cart } = useContext(CartContext);
-    setTimeout(() => console.log(cart), 1000);
     return (
         <>
             <section className="max-w-[1240px] mx-auto">
