@@ -27,7 +27,10 @@ export const CartProvider = ({ children }: Props) => {
     const token = Cookies.get('CA_J7');
     if (token) {
         const { data, error } = useSWR(
-            [`http://localhost:8089/cart/my-cart/${id}`, token],
+            [
+                `https://e-commerce-back-end-marvel.herokuapp.com/cart/my-cart/${id}`,
+                token,
+            ],
             getFetcher
         );
         const [amount, setAmount] = useState(0);

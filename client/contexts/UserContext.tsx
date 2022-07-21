@@ -22,7 +22,7 @@ export const UserProvider = ({ children }: Props) => {
     const token = Cookies.get('CA_J7');
     if (token) {
         const { data, error } = useSWR(
-            ['http://localhost:8089/auth/me', token],
+            ['https://e-commerce-back-end-marvel.herokuapp.com/auth/me', token],
             getFetcher
         );
         const [user, setUser] = useState(initialValue);

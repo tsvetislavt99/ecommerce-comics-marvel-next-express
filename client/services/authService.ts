@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 
 //TODO: Change URL when BE is deployed
-const DEV_URL = 'http://localhost:8089/auth';
+const DEV_URL = 'https://e-commerce-back-end-marvel.herokuapp.com/auth';
 
 export const login = async (username: string, password: string) => {
     const res = await fetch(`${DEV_URL}/login`, {

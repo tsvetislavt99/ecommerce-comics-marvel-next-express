@@ -14,7 +14,9 @@ type Props = {
 };
 
 export async function getStaticProps() {
-    const res = await fetch('http://localhost:8089/comics/comics-page/0/28');
+    const res = await fetch(
+        'https://e-commerce-back-end-marvel.herokuapp.com/comics/comics-page/0/28'
+    );
 
     if (res.ok) {
         const data = await res.json();

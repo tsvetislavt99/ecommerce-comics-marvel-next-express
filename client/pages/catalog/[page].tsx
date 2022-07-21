@@ -26,7 +26,9 @@ export async function getServerSideProps({ params }: PropsContext) {
         };
     }
     const res = await fetch(
-        `http://localhost:8089/comics/comics-page/${(page - 1) * 28}/28`
+        `https://e-commerce-back-end-marvel.herokuapp.com/comics/comics-page/${
+            (page - 1) * 28
+        }/28`
     );
 
     if (res.ok) {
