@@ -57,6 +57,7 @@ export default function CatalogPage(props: Props) {
                     title={comic.title}
                     price={comic.price}
                     thumbnail={comic.thumbnail}
+                    id={comic._id}
                 />
             ))}
             <Pagination

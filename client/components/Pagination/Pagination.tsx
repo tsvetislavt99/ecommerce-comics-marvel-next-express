@@ -14,7 +14,6 @@ export default function Pagination({
 }: Props) {
     const [toRender, setToRender] = useState(() => {
         const allPages = neighbours(currentPage, totalPages).slice();
-        console.log(allPages, 1);
         allPages.push(currentPage);
         if (!allPages.includes(totalPages)) {
             allPages.push(totalPages);
@@ -39,8 +38,6 @@ export default function Pagination({
             return allPages;
         });
     }, [currentPage]);
-
-    console.log(toRender);
 
     return (
         <div className="col-span-full mb-10">

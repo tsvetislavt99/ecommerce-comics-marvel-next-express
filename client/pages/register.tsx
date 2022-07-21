@@ -8,7 +8,6 @@ export default function Register() {
 
     const handleFormSubmit = (e: any) => {
         e.preventDefault();
-        console.log(username, password, rePassword);
     };
 
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
